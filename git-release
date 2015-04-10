@@ -5,7 +5,24 @@ if [ "$1" != 'major' -a "$1" != 'minor' -a "$1" != 'patch' ]; then
   exit 1
 fi
 
+if [ `git rev-parse master` != `git rev-parse origin/master` ]; then
+  echo "Error: master is out of date with origin, please update first!"
+  exit 1
+fi
+
 lastVersion=`git describe --abbrev=0 master`
+
+if [ $? != 0 ]; then
+  read -p "No tags found in repo, shall we initialize this repo for gitflow? [y/N] " -n 1 -r
+  echo
+  if echo $REPLY | grep -E '^[Yy]$' > /dev/null; then
+    git flow init
+    lastVersion="0.0.0"
+  else
+    exit 1
+  fi
+fi
+
 versionArray=(${lastVersion//./ })
 major=${versionArray[0]}
 minor=${versionArray[1]}
