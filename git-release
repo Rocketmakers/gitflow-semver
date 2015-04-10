@@ -23,12 +23,10 @@ echo "Last release was version ${lastVersion}."
 echo "We're about to create a new $1 release, with version ${newVersion}."
 read -p "Continue? [y/N] " -n 1 -r
 echo
-if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-  exit 1
-fi
-
-if [ "$1" == 'patch' ]; then
-  git flow hotfix start $newVersion
-else
-  git flow release start $newVersion
+if echo $REPLY | grep -E '^[Yy]$' > /dev/null; then
+  if [ "$1" == 'patch' ]; then
+    git flow hotfix start $newVersion
+  else
+    git flow release start $newVersion
+  fi
 fi
