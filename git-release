@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $1 != 'major' -a $1 != 'minor' -a $1 != 'patch' ]; then
+if [ "$1" != 'major' -a "$1" != 'minor' -a "$1" != 'patch' ]; then
   >&2 echo "Usage: git release major|minor|patch"
   exit 1
 fi
@@ -11,11 +11,11 @@ major=${versionArray[0]}
 minor=${versionArray[1]}
 patch=${versionArray[2]}
 
-if [ $1 == 'major' ]; then
+if [ "$1" == 'major' ]; then
   newVersion="$((major+1)).0.0"
-elif [ $1 == 'minor' ]; then
+elif [ "$1" == 'minor' ]; then
   newVersion="$major.$((minor+1)).0"
-elif [ $1 == 'patch' ]; then
+elif [ "$1" == 'patch' ]; then
   newVersion="$major.$minor.$((patch+1))"
 fi
 
@@ -23,11 +23,11 @@ echo "Last release was version ${lastVersion}."
 echo "We're about to create a new $1 release, with version ${newVersion}."
 read -p "Continue? [y/N] " -n 1 -r
 echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
   exit 1
 fi
 
-if [ $1 == 'patch' ]; then
+if [ "$1" == 'patch' ]; then
   git flow hotfix start $newVersion
 else
   git flow release start $newVersion
