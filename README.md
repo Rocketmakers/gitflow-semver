@@ -2,7 +2,12 @@
 
 ## Prerequisites ##
 
- 1. Git
+On Windows, install git from [here](https://msysgit.github.io/)
+On OS X, install git with brew:
+
+```
+$ brew install git
+```
 
 If you're on Windows, when installing Git make sure you choose the scary
 PATH option with the red text
