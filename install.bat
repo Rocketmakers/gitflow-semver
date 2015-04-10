@@ -1,8 +1,9 @@
 git flow version > NUL
 if %ERRORLEVEL% GEQ 1 (
   copy gitflow-windows-dependencies\* "C:\Program Files (x86)\Git\bin"
-  cd gitflow
+  pushd gitflow
   contrib\msysgit-install.cmd "C:\Program Files (x86)\Git"
+  popd
 )
 
 echo "Installing..."
