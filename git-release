@@ -62,5 +62,8 @@ else
     git flow hotfix start $newVersion
   else
     git flow release start $newVersion
+    if [ "$1" == 'init' ]; then
+      git flow release finish $newVersion
+    fi
   fi
 fi
