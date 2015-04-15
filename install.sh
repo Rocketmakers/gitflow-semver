@@ -11,4 +11,4 @@ echo "Installing..."
 cp git-release /usr/local/bin
 echo "Done!"
 
-echo "Usage: git release major|minor|patch"
+echo "Usage: git release major|minor|patch|init|version"

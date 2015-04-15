@@ -1,8 +1,13 @@
 #!/bin/bash
 
-if [ "$1" != 'major' -a "$1" != 'minor' -a "$1" != 'patch' -a "$1" != 'init' ]; then
-  >&2 echo "Usage: git release major|minor|patch|init"
+if [ "$1" != 'major' -a "$1" != 'minor' -a "$1" != 'patch' -a "$1" != 'init' -a "$1" != 'version' ]; then
+  >&2 echo "Usage: git release major|minor|patch|init|version"
   exit 1
+fi
+
+if [ "$1" == 'version' ]; then
+  echo "0.0.0"
+  exit 0
 fi
 
 if [ `git rev-parse master` != `git rev-parse origin/master 2> /dev/null` ]; then
