@@ -6,7 +6,7 @@ if [ "$1" != 'major' -a "$1" != 'minor' -a "$1" != 'patch' -a "$1" != 'init' -a 
 fi
 
 if [ "$1" == 'version' ]; then
-  echo "0.0.0"
+  echo "0.1.0"
   exit 0
 fi
 
