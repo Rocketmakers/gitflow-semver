@@ -1,0 +1,25 @@
+{
+  "name": "git-tools",
+  "version": "0.3.0",
+  "description": "On Windows, install git from [here](https://msysgit.github.io/)\r On OS X, install git with brew:",
+  "main": "index.js",
+  "bin": {
+    "git-release": "./git-release"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:rocketmakers/git-tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.9.24",
+    "commander": "^2.8.0",
+    "inquirer": "^0.8.2",
+    "nodegit": "^0.3.3",
+    "semver": "^4.3.3"
+  }
+}

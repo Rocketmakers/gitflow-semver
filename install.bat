@@ -7,5 +7,6 @@ if %ERRORLEVEL% GEQ 1 (
 )
 
 echo "Installing..."
-copy git-release "C:\Program Files (x86)\Git\bin"
+copy git-release "C:\Program Files (x86)\Git\bin\git-release-node"
+copy git-release-windows-shim "C:\Program Files (x86)\Git\bin\git-release"
 echo "Done!"
