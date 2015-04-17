@@ -28,77 +28,87 @@ program.
   option('--init', 'Initialize repository').
   parse(process.argv);
 
-if (program.init) {
-  cp.execAsync('git describe --abbrev=0 master').then(function(error) {
+cp.execAsync('git describe --abbrev=0 master').then(function() {
+  if (program.init) {
     console.error("Error: looks like this repository has already been initialized");
     process.exit(1);
-  });
-}
-
-Git.Repository.open(path.resolve('.')).then(function(repository) {
-  return Promise.props({
-    master: repository.getBranchCommit('master'),
-    origin: repository.getBranchCommit('origin/master')
-  }).then(function(result) {
-    if (!result.master.id().equal(result.origin.id())) {
-      console.error("Error: master is out of date with origin, please update/push first!");
-      process.exit(1);
-    }
-  }).then(function() {
-    return cp.execAsync('git describe --abbrev=0 master').catch(function(error) {
-      if (!program.init) {
-        console.error("Error: no tags found in repo, run again with 'init' to initialize for gitflow");
-        process.exit(1);
-      }
-      return cp.execAsync('git flow init').then(function() {
-        process.exit(0)
-      });
-    });
-  }).spread(function(stdout) {
-    var lastVersion = stdout.trim();
+  }
+}, function() {
+  if (program.init) {
+    return cp.execAsync('git flow init');
+  }
+  console.error("Error: no tags found in repo, run again with 'init' to initialize for gitflow");
+  process.exit(1);
+}).then(function() {
+  Git.Repository.open(path.resolve('.')).then(function(repository) {
     return Promise.props({
-      develop: repository.getBranchCommit('develop'),
-      origin: repository.getBranchCommit('origin/develop')
+      master: repository.getBranchCommit('master'),
+      origin: repository.getBranchCommit('origin/master')
     }).then(function(result) {
-      if (!result.develop.sha === result.origin.sha) {
-        console.error("Error: develop is out of date with origin, please update/push first!");
+      if (!result.master.id().equal(result.origin.id())) {
+        console.error("Error: master is out of date with origin, please update/push first!");
         process.exit(1);
       }
     }).then(function() {
-      console.log('The last version was ' + lastVersion + '.');
-      return inquirer.promptAsync({
-        name: 'release',
-        message: 'What type of release are we doing?',
-        type: 'list',
-        choices: [{
-          name: 'Major (for breaking changes)',
-          value: 'major'
-        }, {
-          name: 'Minor (for new features with non-breaking changes)',
-          value: 'minor'
-        }, {
-          name: 'Patch (for bug fixes with non-breaking changes)',
-          value: 'patch'
-        }]
-      });
-    }).then(function(answers) {
-      var version = semver.inc(lastVersion, answers.release);
-      console.log('The new version will be ' + version + '.');
-      return inquirer.promptAsync({
-        name: 'confirm',
-        message: 'Sound good?',
-        type: 'confirm',
-        default: true
-      }).then(function(answers2) {
-        if (!answers2.confirm){
+      return cp.execAsync('git describe --abbrev=0 master').catch(function(error) {
+        if (!program.init) {
+          console.error("Error: no tags found in repo, run again with 'init' to initialize for gitflow");
           process.exit(1);
         }
-        var branchType = answers.release == 'patch' ? 'hotfix' : 'release';
-        return cp.execAsync('git flow ' + branchType + ' start ' + version);
+        return cp.execAsync('git flow init').then(function() {
+          process.exit(0)
+        });
       });
     }).spread(function(stdout) {
-      console.log(stdout);
+      var lastVersion = stdout.trim();
+      return Promise.props({
+        develop: repository.getBranchCommit('develop'),
+        origin: repository.getBranchCommit('origin/develop')
+      }).then(function(result) {
+        if (!result.develop.sha === result.origin.sha) {
+          console.error("Error: develop is out of date with origin, please update/push first!");
+          process.exit(1);
+        }
+      }).then(function() {
+        console.log('The last version was ' + lastVersion + '.');
+        return inquirer.promptAsync({
+          name: 'release',
+          message: 'What type of release are we doing?',
+          type: 'list',
+          choices: [{
+            name: 'Major (for breaking changes)',
+            value: 'major'
+          }, {
+            name: 'Minor (for new features with non-breaking changes)',
+            value: 'minor'
+          }, {
+            name: 'Patch (for bug fixes with non-breaking changes)',
+            value: 'patch'
+          }]
+        });
+      }).then(function(answers) {
+        var version = semver.inc(lastVersion, answers.release);
+        console.log('The new version will be ' + version + '.');
+        return inquirer.promptAsync({
+          name: 'confirm',
+          message: 'Sound good?',
+          type: 'confirm',
+          default: true
+        }).then(function(answers2) {
+          if (!answers2.confirm){
+            process.exit(1);
+          }
+          var branchType = answers.release == 'patch' ? 'hotfix' : 'release';
+          return cp.execAsync('git flow ' + branchType + ' start ' + version);
+        });
+      }).spread(function(stdout) {
+        console.log(stdout);
+      });
     });
-  });
-}).done();
+  }).catch(function(error) {
+    console.error(error.message);
+  })
+}).catch(function(error) {
+  console.error(error);
+});
 
