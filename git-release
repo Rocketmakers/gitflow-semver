@@ -8,9 +8,10 @@ var fs = require('fs');
 Promise.promisifyAll(fs);
 var path = require('path');
 var semver = require('semver');
-var config = require('shelljs').config;
-config.silent = true;
-require('shelljs/global');
+
+var execOutput = function(command) {
+  return cp.execSync(command, { encoding: 'utf8' }).trim();
+};
 
 var inquirer = require('inquirer');
 inquirer.promptAsync = function(questions) {
@@ -26,11 +27,11 @@ inquirer.promptAsync = function(questions) {
 };
 
 var checkBranchUpToDate = function(branchName) {
-  var local = exec('git rev-parse ' + branchName).output;
-  var remote = exec('git rev-parse origin/' + branchName).output;
+  var local = execOutput('git rev-parse ' + branchName);
+  var remote = execOutput('git rev-parse origin/' + branchName);
   if (local !== remote) {
     console.error("Error: " + branchName + " not up to date with origin");
-    exit(1);
+    process.exit(1);
   }
 }
 
@@ -39,29 +40,37 @@ program.
   option('--init', 'Initialize repository').
   parse(process.argv);
 
-var describeResult = exec("git describe --abbrev=0 --match '[0-9]*' master");
-if (describeResult.code) {
-  if (program.init) {
-    exec('git flow init -d && git flow release start 0.1.0 && git flow release finish -m \'0.1.0\' 0.1.0 && git checkout develop');
-    console.log("OK -- this commit is now tagged as version 0.1.0, and we're on develop and ready to roll!");
-    exit(0);
-  }
-  else {
-    console.error("Error: no tags found in repo, run again with 'init' to initialize for gitflow");
-    exit(1);
-  }
-}
-else {
+try {
+  var lastVersion = execOutput('git describe --abbrev=0 --match "[0-9]*" master');
   if (program.init) {
     console.error("Error: looks like this repository has already been initialized");
     process.exit(1);
   }
 }
+catch (error) {
+  if (program.init) {
+    try {
+      execOutput('git flow init -d');
+      execOutput('git flow release start 0.1.0');
+      execOutput('git flow release finish -m \'0.1.0\' 0.1.0');
+      execOutput('git checkout develop');
+      console.log("OK -- this commit is now tagged as version 0.1.0, and we're on develop and ready to roll!");
+      console.log("check everything looks alright, and then push");
+      process.exit(0);
+    }
+    catch (error) {
+      console.error('something went wrong: ' + error);
+      process.exit(1);
+    }
+  }
+  else {
+    console.error("Error: no tags found in repo, run again with '--init' to initialize for gitflow");
+    process.exit(1);
+  }
+}
 
 checkBranchUpToDate('master');
-//checkBranchUpToDate('develop');
-
-var lastVersion = describeResult.output.trim();
+checkBranchUpToDate('develop');
 
 console.log('The last version was ' + lastVersion + '.');
 inquirer.promptAsync({
@@ -93,9 +102,6 @@ inquirer.promptAsync({
       process.exit(1);
     }
     var branchType = answers.release == 'patch' ? 'hotfix' : 'release';
-    var proc = exec('git flow ' + branchType + ' start ' + version, { async: true });
-    proc.stdout.on('error', function(e) {
-      console.error(e);
-    });
+    console.log(execOutput('git flow ' + branchType + ' start ' + version));
   });
 });
