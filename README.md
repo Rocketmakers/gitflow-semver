@@ -1,34 +1,45 @@
-# Rocketmakers Git tools #
-
-## Prerequisites ##
-
-On Windows, install git from [here](https://msysgit.github.io/)
-On OS X, install git with brew:
-
-```
-$ brew install git
-```
-
-If you're on Windows, when installing Git make sure you choose the scary
-PATH option with the red text
+# Git Flow SemVer #
 
 ## Installing ##
 
+### OS X ###
+
+Install git and git-flow with brew:
+
 ```
-$ git clone --recursive git@bitbucket.org:rocketmakers/git-tools.git
-$ ./install.sh # on OS X
-> install.bat # on Windows
+$ brew install git
+$ brew install git-flow
 ```
 
-Run install.sh on OS X or install.bat on Windows
+Then install using npm:
+
+```
+$ npm install -g gitflow-semver
+```
+
+### Windows ###
+
+Install git from [here](https://msysgit.github.io/). Make sure you
+choose the scary sounding option about what to add to your PATH.
+
+Install git-flow with our installer:
+
+```
+> install.bat
+```
+
+Then install using npm:
+
+```
+$ npm install -g gitflow-semver
+```
 
 ## Usage ##
 
 ```
-$ git release major # (or minor or patch)
+$ git release         # to create a new release
+$ git release --init  # to initialize the repo
 ```
-
-to create a new major, minor, or patch release as per SemVer.
 
 The actual work of creating branches etc is carried out by Git Flow. Patch
 releases are implemented as Git Flow hotfixes.
