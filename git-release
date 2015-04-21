@@ -8,6 +8,7 @@ var fs = require('fs');
 Promise.promisifyAll(fs);
 var path = require('path');
 var semver = require('semver');
+var pjson = require('./package.json');
 
 var execOutput = function(command) {
   return cp.execSync(command, { encoding: 'utf8' }).trim();
@@ -36,8 +37,8 @@ var checkBranchUpToDate = function(branchName) {
 }
 
 program.
-  version('0.3.0').
-  option('--init', 'Initialize repository').
+  version(pjson.version).
+  option('--init', 'initialize repository').
   parse(process.argv);
 
 try {
