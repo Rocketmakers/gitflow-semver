@@ -1,3 +1,4 @@
+@echo off
 git flow version > NUL
 if %ERRORLEVEL% GEQ 1 (
   copy gitflow-windows-dependencies\* "C:\Program Files (x86)\Git\bin"
@@ -7,6 +8,5 @@ if %ERRORLEVEL% GEQ 1 (
 )
 
 echo "Installing..."
-copy git-release "C:\Program Files (x86)\Git\bin\git-release-node"
 copy git-release-windows-shim "C:\Program Files (x86)\Git\bin\git-release"
 echo "Done!"
