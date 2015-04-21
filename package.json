@@ -1,20 +1,16 @@
 {
-  "name": "git-tools",
+  "name": "gitflow-semver",
   "version": "0.3.0",
-  "description": "On Windows, install git from [here](https://msysgit.github.io/)\r On OS X, install git with brew:",
-  "main": "index.js",
+  "description": "Git extensions to automatically create release branches with SemVer names",
   "bin": {
     "git-release": "./git-release"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:rocketmakers/git-tools.git"
+    "url": "git@github.com:Rocketmakers/gitflow-semver.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Rocketmakers",
+  "license": "MIT",
   "dependencies": {
     "bluebird": "^2.9.24",
     "commander": "^2.8.0",
