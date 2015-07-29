@@ -22,6 +22,8 @@ $ npm install -g gitflow-semver
 Install git from [here](https://msysgit.github.io/). Make sure you
 choose the scary sounding option about what to add to your PATH.
 
+Clone this repository with `git clone --recursive`
+
 Install git-flow and a shim for git-release with our installer:
 
 ```
