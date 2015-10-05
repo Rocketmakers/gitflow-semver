@@ -33,7 +33,7 @@ Install git-flow and a shim for git-release with our installer:
 Then install using npm:
 
 ```
-$ npm install -g gitflow-semver
+> npm install -g gitflow-semver
 ```
 
 ## Usage ##
@@ -45,3 +45,7 @@ $ git release --init  # to initialize the repo
 
 The actual work of creating branches etc is carried out by Git Flow. Patch
 releases are implemented as Git Flow hotfixes.
+
+**Note:** when fixing a bug and doing a patch release, you currently have to
+start the patch *before* you do the bug fix, because of how git-flow hotfixes
+work.
