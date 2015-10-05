@@ -1,6 +1,6 @@
 {
   "name": "gitflow-semver",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Git extensions to automatically create release branches with SemVer names",
   "bin": {
     "git-release": "./git-release"
