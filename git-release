@@ -52,10 +52,10 @@ catch (error) {
   if (program.init) {
     try {
       execOutput('git flow init -d');
-      execOutput('git flow release start 0.1.0');
-      execOutput('git flow release finish -m \'0.1.0\' 0.1.0');
+      execOutput('git flow release start 0.0.1');
+      execOutput('git flow release finish -m \'0.0.1\' 0.0.1');
       execOutput('git checkout develop');
-      console.log("OK -- this commit is now tagged as version 0.1.0, and we're on develop and ready to roll!");
+      console.log("OK -- this commit is now tagged as version 0.0.1, and we're on develop and ready to roll!");
       console.log("check everything looks alright, and then push");
       process.exit(0);
     }
