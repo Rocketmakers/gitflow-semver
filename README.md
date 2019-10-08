@@ -1,5 +1,7 @@
 # Git Flow SemVer #
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Rocketmakers/gitflow-semver.svg)](https://greenkeeper.io/)
+
 ## Installing ##
 
 ### OS X ###
