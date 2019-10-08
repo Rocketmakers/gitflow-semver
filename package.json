@@ -12,9 +12,9 @@
   "author": "Rocketmakers",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^2.9.24",
-    "commander": "^2.8.0",
-    "inquirer": "^0.8.2",
-    "semver": "^4.3.3"
+    "bluebird": "^3.7.0",
+    "commander": "^3.0.2",
+    "inquirer": "^7.0.0",
+    "semver": "^6.3.0"
   }
 }
